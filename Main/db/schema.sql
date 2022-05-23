@@ -21,11 +21,14 @@ CREATE TABLE role(
 CREATE TABLE employee(
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   first_name VARCHAR(30) NOT NULL,
-  last_name DECIMAL,
+  last_name VARCHAR(30),
   role_id INT,
-  manager_id INT REFERENCES employees(id),
+  manager_id INT NULL,
   FOREIGN KEY (role_id)
   REFERENCES role(id)
+  ON DELETE SET NULL,
+  FOREIGN KEY (manager_id)
+  REFERENCES employee(id)
   ON DELETE SET NULL
 );
 
@@ -41,3 +44,13 @@ VALUES  ("Sales Lead", 100000, 1),
         ("Accountant", 125000, 3),
         ("Legal Team Lead", 250000, 4),
         ("Lawyer", 190000, 4);
+
+INSERT INTO employee (first_name, last_name, role_id, manager_id)
+VALUES  ("Tom", "Hawks", 1, null),
+        ("Chris", "Cane", 2, 1),
+        ("Jennifer", "Davis", 3, null),
+        ("Richard", "Smith", 4, 3),
+        ("Zachary", "McnKennon", 5, null),
+        ("Roy", "Geeves", 6, 5),
+        ("Monica", "Cullen", 7, null),
+        ("Sarah", "Knettel", 8, 7);
