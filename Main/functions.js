@@ -1,3 +1,4 @@
+const inquirer = require('inquirer');
 const mysql = require('mysql2');
 const connection = mysql.createConnection({
     host: 'localhost',
@@ -44,6 +45,28 @@ class Functions {
             if (error) throw error;
             console.table(result);
         })
+    };
+
+    addDept(){
+        inquirer
+            .prompt([
+                {
+                    type: 'input',
+                    message: 'What is the name of the new department you would like to add?',
+                    name: 'newDept'
+                }
+            ])
+            .then(res => {
+                const sql = `
+                INSERT INTO department (name)
+                VALUES ("${res.newDept}")`;
+
+                connection.query(sql, (error, result) => {
+                    if (error) throw error;
+                    console.log(`${res.newDept} has been added to the list of Departments.`)
+                })
+            })
+            
     };
 }
 

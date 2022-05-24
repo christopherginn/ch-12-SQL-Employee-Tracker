@@ -34,7 +34,7 @@ inquirer
             break;
             case 'viewRoles': query.viewRoles();
             break;
-            case 'addDept': ;
+            case 'addDept': query.addDept();
             break;
             case 'addRole': ;
             break;
