@@ -1,15 +1,8 @@
 const inquirer = require('inquirer');
-const mysql = require('mysql2');
 const ct = require('console.table');
+const Functions = require('./functions');
 
-const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'chris',
-    database: 'employeetracker_db',
-    }, 
-    console.log("Connected to employeetracker_db")
-);
+const query = new Functions;
 
 inquirer
     .prompt([
@@ -35,11 +28,11 @@ inquirer
     ])
     .then(res => {
         switch (res.task) {
-            case 'viewAll': ;
+            case 'viewAll': query.viewAll();
             break;
-            case 'viewDepts': ;
+            case 'viewDepts': query.viewDept();
             break;
-            case 'viewRoles': ;
+            case 'viewRoles': query.viewRoles();
             break;
             case 'addDept': ;
             break;
