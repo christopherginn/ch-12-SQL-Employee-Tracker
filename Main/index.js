@@ -36,10 +36,10 @@ inquirer
             break;
             case 'addDept': query.addDept();
             break;
-            case 'addRole': ;
+            case 'addRole': query.addRole();
             break;
-            case 'addEmployee': ;
+            case 'addEmployee': query.addEmployee();
             break;
-            case 'updateEmployee': ;
+            case 'updateEmployee': query.updateEmployee();
         }
     })

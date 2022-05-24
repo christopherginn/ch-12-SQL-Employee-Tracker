@@ -68,6 +68,106 @@ class Functions {
             })
             
     };
+
+    addEmployee(){
+        const roles = [];
+        connection.query("SELECT * FROM role", (error, res) => {
+            if (error) throw error;
+
+            res.forEach(res => {
+                let roleRow = {
+                    name: res.title,
+                    value: res.id
+                }
+                roles.push(roleRow);
+            })
+        });
+
+        const managers = [];
+        connection.query(`SELECT CONCAT(employee.first_name, " ", employee.last_name) AS manager, employee.id AS id, employee.manager_id
+                            FROM employee 
+                            WHERE employee.manager_id IS NULL ; `, (error, res) => {
+            if (error) throw error;
+
+            res.forEach(manager => {
+                let managerChoice = {
+                    name: manager.manager,
+                    value: manager.id
+                }
+                managers.push(managerChoice);
+            })
+        });
+
+        inquirer
+            .prompt([
+                {
+                    type: 'input',
+                    message: "What is the new employee's first name?",
+                    name : 'first_name'
+                },
+                {
+                    type: 'input',
+                    message: "What is the new employee's last name?",
+                    name: 'last_name'
+                },
+                {
+                    type: 'list',
+                    message: "What is the new employee's role?",
+                    name: 'role',
+                    choices: roles
+                },
+                {
+                    type: 'list',
+                    message: "What is the new employee's manager?",
+                    name: 'manager',
+                    choices: managers
+                }
+            ])
+            .then(res => {
+                const sql = `
+                INSERT INTO employee (first_name, last_name, role_id, manager_id)
+                VALUES ("${res.first_name}", "${res.last_name}", ${res.role}, ${res.manager})`;
+
+                connection.query(sql, (error, result) => {
+                    if (error) throw error;
+                    console.log(`${res.first_name} ${res.last_name} has been added to the list of Employees.`)
+                })
+            })
+    };
+
+    addRole(){
+        const depts = [];
+        connection.query("SELECT * FROM department", (error, res) => {
+            if (error) throw error;
+            console.log(res);
+            res.forEach(res => {
+                let deptRow = {
+                    name: res.name,
+                    value: res.id
+                }
+                depts.push(deptRow);
+            })
+            console.log(depts)
+        });
+        
+    };
+
+    updateEmployee(){
+        const managers = [];
+        connection.query(`SELECT CONCAT(employee.first_name, " ", employee.last_name) AS manager, employee.id AS id 
+                            FROM employee 
+                            WHERE manager_id = null `, (error, res) => {
+            if (error) throw error;
+            console.log(res);
+            res.forEach(manager => {
+                let managerChoice = {
+                    name: manager.manager,
+                    value: manager.id
+                }
+                managers.push(managerChoice);
+            })
+        });
+    }
 }
 
 module.exports = Functions;
