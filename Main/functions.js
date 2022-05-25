@@ -139,7 +139,6 @@ class Functions {
         const depts = [];
         connection.query("SELECT * FROM department", (error, res) => {
             if (error) throw error;
-            console.log(res);
             res.forEach(res => {
                 let deptRow = {
                     name: res.name,
@@ -147,25 +146,63 @@ class Functions {
                 }
                 depts.push(deptRow);
             })
-            console.log(depts)
         });
+
+        inquirer
+            .prompt([
+                {
+                    type: 'input',
+                    message: 'What is the name of the new role?',
+                    name: 'roleName'
+                },
+                {
+                    type: 'input',
+                    message: "What is the salary for this role?",
+                    name: "salary",
+                    validate(value) {
+                        if (isNaN(value)){
+                            return "Input can only be number."
+                        } else {
+                            return true;
+                        }
+                    }
+                },
+                {
+                    type: "list",
+                    message: "Please select a department that this is role will be in.",
+                    name: "dept",
+                    choices: depts
+                }
+            ])
+            .then(res => {
+                const sql = `
+                INSERT INTO role (title, salary, department_id)
+                VALUES ("${res.roleName}", ${res.salary}, ${res.dept})`;
+
+                connection.query(sql, (error, result) => {
+                    if (error) throw error;
+                    console.log(`${res.roleName} has been added to the list of Roles.`)
+                })
+            })
+
         
     };
 
-    updateEmployee(){
-        const managers = [];
-        connection.query(`SELECT CONCAT(employee.first_name, " ", employee.last_name) AS manager, employee.id AS id 
-                            FROM employee 
-                            WHERE manager_id = null `, (error, res) => {
+    updateEmployeeRole(){
+        const employees = [];
+        connection.query(`SELECT CONCAT(employee.first_name, " ", employee.last_name) AS employee, employee.id AS id 
+                            FROM employee`, 
+            (error, res) => {
             if (error) throw error;
             console.log(res);
-            res.forEach(manager => {
-                let managerChoice = {
-                    name: manager.manager,
-                    value: manager.id
+            res.forEach(employee => {
+                let employeeChoice = {
+                    name: employee.employee,
+                    value: employee.id
                 }
-                managers.push(managerChoice);
+                employees.push(employeeChoice);
             })
+        console.log(employees);
         });
     }
 }
