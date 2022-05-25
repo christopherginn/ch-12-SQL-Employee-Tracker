@@ -183,7 +183,7 @@ class Functions {
                     if (error) throw error;
                     console.log(`${res.roleName} has been added to the list of Roles.`)
                 })
-            })
+            });
 
         
     };
@@ -194,17 +194,64 @@ class Functions {
                             FROM employee`, 
             (error, res) => {
             if (error) throw error;
-            console.log(res);
-            res.forEach(employee => {
+            // console.log(res);
+            res.forEach(res => {
                 let employeeChoice = {
-                    name: employee.employee,
-                    value: employee.id
-                }
+                    name: res.employee,
+                    value: res.id
+                };
                 employees.push(employeeChoice);
             })
-        console.log(employees);
+        // console.log(employees);
         });
-    }
+
+        const roles = [];
+        connection.query("SELECT * FROM role", (error, res) => {
+            if (error) throw error;
+
+            res.forEach(res => {
+                let roleRow = {
+                    name: res.title,
+                    value: res.id
+                }
+                roles.push(roleRow);
+            })
+        // console.log(roles);
+        });
+
+        inquirer
+            .prompt([
+                {
+                    type: "confirm",
+                    message: "Any changes made will",
+                    name: "warning"
+                },
+                {
+                    type: "list",
+                    message: "Select the Employee that wish to update.",
+                    name: "employeeSelect",
+                    choices: employees,
+                },
+                {
+                    type: 'list',
+                    message: 'Select the role to assign to the Employee. This will override previous role.',
+                    name: 'role',
+                    choices: roles
+                }
+            ])
+            .then(res => {
+                const sql = `
+                UPDATE employee
+                SET role_id = ${res.role}
+                WHERE id = ${res.employeeSelect};`
+
+                connection.query(sql, (error, result) => {
+                    if (error) throw error;
+                    console.log(`Role has been updated for this Employee.`)
+                })
+            })
+            
+    };
 }
 
 module.exports = Functions;
