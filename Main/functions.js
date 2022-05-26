@@ -1,5 +1,6 @@
 const inquirer = require('inquirer');
 const mysql = require('mysql2');
+const ct = require('console.table');
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
@@ -10,6 +11,7 @@ const connection = mysql.createConnection({
 );
 
 class Functions {
+    // view all employees
     viewAll(){
         const sql = `
         SELECT
@@ -22,8 +24,62 @@ class Functions {
             if (error) throw error;
             console.table(result);
         })
+        
+        this.start();
     };
 
+    // prompts user to select an action
+    start(){
+        inquirer
+            .prompt([
+                {
+                    type: 'list',
+                    message: 'What would you like to do?',
+                    name: 'task',
+                    choices: [
+                        {name:'View All Employees', value:'viewAll'},
+                        {name:'View All Departments', value:'viewDepts'},
+                        {name:'View All Roles', value:'viewRoles'},
+                        {name:'Add a Department', value:'addDept'},
+                        {name:'Add a Role', value:'addRole'},
+                        {name:'Add an Employee', value:'addEmployee'},
+                        {name:'Update an Employee Role', value:'updateEmployee'},
+                        {name:'Quit', value:'quit'}
+                    ]
+                },
+            ])
+            .then(res => {
+                switch (res.task) {
+                    case 'viewAll': this.viewAll();
+                    break;
+                    case 'viewDepts': this.viewDept();
+                    break;
+                    case 'viewRoles': this.viewRoles();
+                    break;
+                    case 'addDept': this.addDept();
+                    break;
+                    case 'addRole': this.addRole();
+                    break;
+                    case 'addEmployee': this.addEmployee();
+                    break;
+                    case 'updateEmployee': this.updateEmployeeRole();
+                    break;
+                    case 'quit': this.quit();
+                }
+            })
+    };
+
+    // quit app and disconnect from database
+    quit(){
+        if (connection) {
+            connection.end(function() {
+                console.log("Connection to database closed.");
+            });
+        }
+        console.log("Exiting");
+    };
+
+    // view all departments
     viewDept(){
         const sql = `
         SELECT
@@ -33,8 +89,10 @@ class Functions {
             if (error) throw error;
             console.table(result);
         })
+        this.start();
     };
 
+    // view all roles
     viewRoles(){
         const sql = `
         SELECT
@@ -45,8 +103,10 @@ class Functions {
             if (error) throw error;
             console.table(result);
         })
+        this.start();
     };
 
+    // add a department
     addDept(){
         inquirer
             .prompt([
@@ -66,9 +126,10 @@ class Functions {
                     console.log(`${res.newDept} has been added to the list of Departments.`)
                 })
             })
-            
+            this.start();
     };
 
+    // adds an employee to database
     addEmployee(){
         const roles = [];
         connection.query("SELECT * FROM role", (error, res) => {
@@ -133,8 +194,10 @@ class Functions {
                     console.log(`${res.first_name} ${res.last_name} has been added to the list of Employees.`)
                 })
             })
+        this.start();
     };
 
+    // adds role to database
     addRole(){
         const depts = [];
         connection.query("SELECT * FROM department", (error, res) => {
@@ -184,10 +247,12 @@ class Functions {
                     console.log(`${res.roleName} has been added to the list of Roles.`)
                 })
             });
-
+            .then()
+        this.start();
         
     };
 
+    //changes the role title of an already existing employee
     updateEmployeeRole(){
         const employees = [];
         connection.query(`SELECT CONCAT(employee.first_name, " ", employee.last_name) AS employee, employee.id AS id 
@@ -223,7 +288,7 @@ class Functions {
             .prompt([
                 {
                     type: "confirm",
-                    message: "Any changes made will",
+                    message: "Any changes made will be permanent. Do you wish to proceed?",
                     name: "warning"
                 },
                 {
@@ -250,8 +315,10 @@ class Functions {
                     console.log(`Role has been updated for this Employee.`)
                 })
             })
-            
+        this.start();
     };
 }
+
+
 
 module.exports = Functions;
