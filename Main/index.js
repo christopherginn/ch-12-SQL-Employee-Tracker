@@ -4,7 +4,20 @@ const Functions = require('./functions');
 
 const query = new Functions;
 
-inquirer
+// inquirer
+//     .prompt([
+//         {
+//             type: 'input',
+//             message: 'Welcome to the SQL Employee Tracker CLI app. Press any key to start.',
+//             name: 'welcome'
+//         },
+//     ])
+//     .then( res => {
+//         query.start()
+//     });
+
+function init(){
+    inquirer
     .prompt([
         {
             type: 'input',
@@ -15,5 +28,6 @@ inquirer
     .then( res => {
         query.start()
     });
+}
 
-
+init();

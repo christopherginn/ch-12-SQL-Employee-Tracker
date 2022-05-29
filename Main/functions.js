@@ -22,10 +22,24 @@ class Functions {
         LEFT JOIN employee manager ON employee.manager_id = manager.id;`;
         connection.query(sql, (error, result) => {
             if (error) throw error;
+            console.log(`\n`);
             console.table(result);
         })
         
-        this.start();
+        inquirer.prompt([
+            {
+                type: "confirm",
+                message: "Would you like to go back to the main menu?",
+                name: "confirm"
+            }
+        ])
+        .then(res => {
+            if (res.confirm) {
+                this.start();
+            } else {
+                this.quit();
+            }
+        })
     };
 
     // prompts user to select an action
@@ -87,9 +101,23 @@ class Functions {
         FROM department;` ;
         connection.query(sql, (error, result) => {
             if (error) throw error;
+            console.log(`\n`)
             console.table(result);
         })
-        this.start();
+        inquirer.prompt([
+            {
+                type: "confirm",
+                message: "Would you like to go back to the main menu?",
+                name: "confirm"
+            }
+        ])
+        .then(res => {
+            if (res.confirm) {
+                this.start();
+            } else {
+                this.quit();
+            }
+        })
     };
 
     // view all roles
@@ -101,9 +129,23 @@ class Functions {
         JOIN department ON role.department_id = department.id;` ;
         connection.query(sql, (error, result) => {
             if (error) throw error;
+            console.log(`\n`);
             console.table(result);
         })
-        this.start();
+        inquirer.prompt([
+            {
+                type: "confirm",
+                message: "Would you like to go back to the main menu?",
+                name: "confirm"
+            }
+        ])
+        .then(res => {
+            if (res.confirm) {
+                this.start();
+            } else {
+                this.quit();
+            }
+        })
     };
 
     // add a department
@@ -126,7 +168,20 @@ class Functions {
                     console.log(`${res.newDept} has been added to the list of Departments.`)
                 })
             })
-            this.start();
+            inquirer.prompt([
+                {
+                    type: "confirm",
+                    message: "Would you like to go back to the main menu?",
+                    name: "confirm"
+                }
+            ])
+            .then(res => {
+                if (res.confirm) {
+                    this.start();
+                } else {
+                    this.quit();
+                }
+            })
     };
 
     // adds an employee to database
@@ -194,7 +249,20 @@ class Functions {
                     console.log(`${res.first_name} ${res.last_name} has been added to the list of Employees.`)
                 })
             })
-        this.start();
+            inquirer.prompt([
+                {
+                    type: "confirm",
+                    message: "Would you like to go back to the main menu?",
+                    name: "confirm"
+                }
+            ])
+            .then(res => {
+                if (res.confirm) {
+                    this.start();
+                } else {
+                    this.quit();
+                }
+            })
     };
 
     // adds role to database
@@ -247,8 +315,20 @@ class Functions {
                     console.log(`${res.roleName} has been added to the list of Roles.`)
                 })
             });
-            .then()
-        this.start();
+            inquirer.prompt([
+                {
+                    type: "confirm",
+                    message: "Would you like to go back to the main menu?",
+                    name: "confirm"
+                }
+            ])
+            .then(res => {
+                if (res.confirm) {
+                    this.start();
+                } else {
+                    this.quit();
+                }
+            })
         
     };
 
@@ -315,7 +395,20 @@ class Functions {
                     console.log(`Role has been updated for this Employee.`)
                 })
             })
-        this.start();
+            inquirer.prompt([
+                {
+                    type: "confirm",
+                    message: "Would you like to go back to the main menu?",
+                    name: "confirm"
+                }
+            ])
+            .then(res => {
+                if (res.confirm) {
+                    this.start();
+                } else {
+                    this.quit();
+                }
+            })
     };
 }
 
