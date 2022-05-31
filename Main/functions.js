@@ -167,21 +167,23 @@ class Functions {
                     if (error) throw error;
                     console.log(`${res.newDept} has been added to the list of Departments.`)
                 })
+
+                inquirer.prompt([
+                    {
+                        type: "confirm",
+                        message: "Would you like to go back to the main menu?",
+                        name: "confirm"
+                    }
+                ])
+                .then(res => {
+                    if (res.confirm) {
+                        this.start();
+                    } else {
+                        this.quit();
+                    }
+                })
             })
-            inquirer.prompt([
-                {
-                    type: "confirm",
-                    message: "Would you like to go back to the main menu?",
-                    name: "confirm"
-                }
-            ])
-            .then(res => {
-                if (res.confirm) {
-                    this.start();
-                } else {
-                    this.quit();
-                }
-            })
+            
     };
 
     // adds an employee to database
@@ -248,21 +250,23 @@ class Functions {
                     if (error) throw error;
                     console.log(`${res.first_name} ${res.last_name} has been added to the list of Employees.`)
                 })
+
+                inquirer.prompt([
+                    {
+                        type: "confirm",
+                        message: "Would you like to go back to the main menu?",
+                        name: "confirm"
+                    }
+                ])
+                .then(res => {
+                    if (res.confirm) {
+                        this.start();
+                    } else {
+                        this.quit();
+                    }
+                })
             })
-            inquirer.prompt([
-                {
-                    type: "confirm",
-                    message: "Would you like to go back to the main menu?",
-                    name: "confirm"
-                }
-            ])
-            .then(res => {
-                if (res.confirm) {
-                    this.start();
-                } else {
-                    this.quit();
-                }
-            })
+            
     };
 
     // adds role to database
@@ -314,21 +318,23 @@ class Functions {
                     if (error) throw error;
                     console.log(`${res.roleName} has been added to the list of Roles.`)
                 })
+
+                inquirer.prompt([
+                    {
+                        type: "confirm",
+                        message: "Would you like to go back to the main menu?",
+                        name: "confirm"
+                    }
+                ])
+                .then(res => {
+                    if (res.confirm) {
+                        this.start();
+                    } else {
+                        this.quit();
+                    }
+                })
             });
-            inquirer.prompt([
-                {
-                    type: "confirm",
-                    message: "Would you like to go back to the main menu?",
-                    name: "confirm"
-                }
-            ])
-            .then(res => {
-                if (res.confirm) {
-                    this.start();
-                } else {
-                    this.quit();
-                }
-            })
+            
         
     };
 
@@ -394,21 +400,23 @@ class Functions {
                     if (error) throw error;
                     console.log(`Role has been updated for this Employee.`)
                 })
+
+                inquirer.prompt([
+                    {
+                        type: "confirm",
+                        message: "Would you like to go back to the main menu?",
+                        name: "confirm"
+                    }
+                ])
+                .then(res => {
+                    if (res.confirm) {
+                        this.start();
+                    } else {
+                        this.quit();
+                    }
+                })
             })
-            inquirer.prompt([
-                {
-                    type: "confirm",
-                    message: "Would you like to go back to the main menu?",
-                    name: "confirm"
-                }
-            ])
-            .then(res => {
-                if (res.confirm) {
-                    this.start();
-                } else {
-                    this.quit();
-                }
-            })
+           
     };
 }
 
